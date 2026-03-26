@@ -2,237 +2,580 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MENTE MAESTRA | THE OVERLORD PROJECT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Cosmic Journey | DeepSeek Experience</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Space+Grotesk:wght@300;500;700&display=swap');
-
-        :root {
-            --primary: #ccff00;
-            --bg: #030303;
-            --text: #ffffff;
-            --accent-blue: #00f3ff;
-            --glass: rgba(255, 255, 255, 0.02);
-            --transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
 
         body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Space Grotesk', sans-serif;
-            overflow-x: hidden;
-            line-height: 1.4;
+            overflow: hidden;
+            font-family: 'Segoe UI', 'Poppins', 'Arial', sans-serif;
+            background: radial-gradient(ellipse at center, #0a0f2a 0%, #03050b 100%);
+            color: white;
         }
 
-        /* --- BACKGROUND ENGINE --- */
-        #grid-canvas {
+        /* Canvas para las estrellas animadas */
+        #starCanvas {
             position: fixed;
             top: 0;
             left: 0;
-            z-index: -1;
-            opacity: 0.4;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
         }
 
-        /* --- CUSTOM CURSOR SYSTEM --- */
-        #cursor {
-            width: 10px; height: 10px; background: var(--primary);
-            border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999;
-            transition: transform 0.1s; mix-blend-mode: difference;
-        }
-        #cursor-aura {
-            width: 50px; height: 50px; border: 1px solid var(--primary);
-            border-radius: 50%; position: fixed; pointer-events: none; z-index: 9998;
-            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        /* --- NAVIGATION --- */
-        nav {
-            position: fixed; top: 0; width: 100%; padding: 40px;
-            display: flex; justify-content: space-between; z-index: 100;
-            font-family: 'Syncopate', sans-serif; font-size: 0.7rem; letter-spacing: 4px;
+        /* Contenido principal */
+        .content {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 2rem;
+            backdrop-filter: blur(3px);
         }
 
-        /* --- HERO: THE MONOLITH --- */
-        .hero {
-            height: 100vh; display: flex; flex-direction: column;
-            justify-content: center; padding: 0 10%; position: relative;
+        /* Nave espacial animada */
+        .spaceship {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin-bottom: 2rem;
+            animation: float 3s ease-in-out infinite;
+            cursor: pointer;
+            transition: transform 0.3s;
         }
 
-        .hero h1 {
-            font-family: 'Syncopate', sans-serif;
-            font-size: clamp(3rem, 12vw, 12rem);
-            font-weight: 700; line-height: 0.8;
-            text-transform: uppercase; margin-left: -5px;
+        .spaceship:hover {
+            transform: scale(1.1);
         }
 
-        .hero .outline {
-            color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.3);
-            transition: var(--transition);
+        .spaceship svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.6));
         }
 
-        .hero h1:hover .outline { -webkit-text-stroke: 1px var(--primary); }
-
-        .hero-data {
-            margin-top: 40px; display: grid; grid-template-columns: 1fr 1fr;
-            max-width: 800px; gap: 40px;
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
         }
 
-        .hero-data p { color: #888; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; }
-
-        /* --- SECTION: BENTO MAXIMUS --- */
-        .bento-section { padding: 100px 5%; display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; }
-
-        .bento-item {
-            grid-column: span 4; background: var(--glass);
-            border: 1px solid rgba(255,255,255,0.05); padding: 50px;
-            border-radius: 2px; position: relative; overflow: hidden;
-            transition: var(--transition);
+        /* Título con glow */
+        .title {
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, #7dd3fc, #38bdf8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 30px rgba(56, 189, 248, 0.3);
+            animation: titleGlow 2s ease-in-out infinite alternate;
         }
 
-        .bento-item:hover { background: rgba(255,255,255,0.05); border-color: var(--primary); }
-
-        .bento-item.wide { grid-column: span 8; }
-        .bento-item.tall { grid-row: span 2; display: flex; flex-direction: column; justify-content: space-between; }
-
-        .bento-item h3 { font-family: 'Syncopate', sans-serif; font-size: 1.5rem; margin-bottom: 20px; color: var(--primary); }
-
-        /* --- SCROLL REVEAL --- */
-        .reveal { opacity: 0; transform: translateY(80px); transition: 1.2s all cubic-bezier(0.23, 1, 0.32, 1); }
-        .reveal.active { opacity: 1; transform: translateY(0); }
-
-        /* --- FOOTER BRUTALISTA --- */
-        footer {
-            padding: 100px 5%; border-top: 1px solid rgba(255,255,255,0.1);
-            display: flex; justify-content: space-between; align-items: flex-end;
+        @keyframes titleGlow {
+            from { text-shadow: 0 0 20px rgba(56, 189, 248, 0.3); }
+            to { text-shadow: 0 0 40px rgba(56, 189, 248, 0.8); }
         }
 
-        .big-mail { font-size: clamp(2rem, 8vw, 8rem); font-family: 'Syncopate', sans-serif; text-decoration: none; color: white; transition: 0.3s; }
-        .big-mail:hover { color: var(--primary); }
-
-        @media (max-width: 768px) {
-            .bento-item, .bento-item.wide { grid-column: span 12; }
-            nav { padding: 20px; }
+        .subtitle {
+            font-size: 1.2rem;
+            color: #cbd5e6;
+            margin-bottom: 3rem;
+            letter-spacing: 2px;
+            font-weight: 300;
         }
+
+        /* Tarjeta principal */
+        .card {
+            background: rgba(15, 25, 45, 0.6);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            padding: 2.5rem;
+            max-width: 500px;
+            width: 90%;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 189, 248, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 55px rgba(0, 0, 0, 0.6), 0 0 30px rgba(56, 189, 248, 0.4);
+        }
+
+        /* Mensaje dinámico */
+        .message-box {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            border-left: 4px solid #38bdf8;
+            color: #e2e8f0;
+            line-height: 1.4;
+        }
+
+        /* Botón interactivo */
+        .explore-btn {
+            background: linear-gradient(90deg, #3b82f6, #a855f7);
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 1rem 2rem;
+            border-radius: 3rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+            width: 100%;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .explore-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .explore-btn:hover::before {
+            left: 100%;
+        }
+
+        .explore-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.6);
+        }
+
+        .explore-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Contador de viajes */
+        .counter {
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: #94a3b8;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .counter span {
+            color: #38bdf8;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* Planeta orbita (elemento decorativo) */
+        .orbit {
+            position: fixed;
+            bottom: -150px;
+            right: -150px;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(168,85,247,0.2), transparent);
+            z-index: 2;
+            pointer-events: none;
+            animation: rotate 60s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Partículas de meteoros (CSS) */
+        .meteor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .title { font-size: 2.5rem; }
+            .message-box { font-size: 1.2rem; }
+            .card { padding: 1.5rem; }
+            .spaceship { width: 80px; height: 80px; }
+        }
+
+        /* Ocultar scrollbar pero mantener funcionalidad */
+        ::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body>
 
-    <div id="cursor"></div>
-    <div id="cursor-aura"></div>
-    <canvas id="grid-canvas"></canvas>
+    <canvas id="starCanvas"></canvas>
+    <div class="orbit"></div>
 
-    <nav>
-        <div>MENTE MAESTRA ©2026</div>
-        <div id="clock">00:00:00</div>
-    </nav>
-
-    <section class="hero">
-        <h1 class="reveal">ULTRA<br><span class="outline">AMBITION</span><br>SYSTEM</h1>
-        <div class="hero-data reveal">
-            <p>// DEFINIENDO EL ESTÁNDAR DE ORO EN LA EJECUCIÓN DIGITAL.</p>
-            <p>// OPTIMIZACIÓN ABSOLUTA. ESTÉTICA RADICAL.</p>
+    <div class="content">
+        <div class="spaceship" id="spaceship">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M50 10 L65 40 L85 45 L70 65 L75 85 L50 75 L25 85 L30 65 L15 45 L35 40 L50 10Z" fill="url(#grad)" stroke="#7dd3fc" stroke-width="2"/>
+                <circle cx="50" cy="45" r="8" fill="#ffd966" stroke="#ffaa33" stroke-width="1.5"/>
+                <defs>
+                    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#3b82f6"/>
+                        <stop offset="100%" stop-color="#a855f7"/>
+                    </linearGradient>
+                </defs>
+            </svg>
         </div>
-    </section>
 
-    <section class="bento-section">
-        <div class="bento-item tall reveal">
-            <div>
-                <h3>ESTRATEGIA<br>NUCLEAR</h3>
-                <p>No seguimos tendencias. Las destruimos para construir algo nuevo sobre sus cenizas.</p>
+        <h1 class="title">Cosmic Journey</h1>
+        <p class="subtitle">✦ Explora lo desconocido ✦</p>
+
+        <div class="card">
+            <div class="message-box" id="messageBox">
+                🌌 Presiona el botón para iniciar tu viaje espacial 🌌
             </div>
-            <div style="font-size: 4rem; opacity: 0.1; font-weight: 900;">01</div>
+            <button class="explore-btn" id="exploreBtn">
+                🚀 DESCUBRIR NUEVO MUNDO 🪐
+            </button>
+            <div class="counter">
+                <span>✦ Viajes realizados: </span>
+                <span id="tripCount">0</span>
+            </div>
         </div>
-        <div class="bento-item wide reveal">
-            <h3>CÓDIGO DE VANGUARDIA</h3>
-            <p>Estructuras optimizadas para una carga instantánea. El tiempo es el único lujo que tus clientes no pueden comprar; nosotros se lo regalamos.</p>
-        </div>
-        <div class="bento-item reveal">
-            <h3>DISEÑO SENSO</h3>
-            <p>Interfaces que responden a la psicología humana.</p>
-        </div>
-        <div class="bento-item wide reveal">
-            <h3>DATOS EN TIEMPO REAL</h3>
-            <p>Tu negocio bajo un microscopio digital. Decisiones basadas en realidades, no en suposiciones.</p>
-        </div>
-    </section>
-
-    <footer>
-        <div>
-            <p>PROYECTO: OVERLORD</p>
-            <p>ESTADO: OPERATIVO</p>
-        </div>
-        <a href="mailto:hola@mentemaestra.io" class="big-mail">LET'S GO.</a>
-    </footer>
+    </div>
 
     <script>
-        // CURSOR ENGINE
-        const cursor = document.getElementById('cursor');
-        const aura = document.getElementById('cursor-aura');
-        
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.transform = `translate(${e.clientX - 5}px, ${e.clientY - 5}px)`;
-            aura.style.transform = `translate(${e.clientX - 25}px, ${e.clientY - 25}px)`;
-        });
-
-        // GRID CANVAS ENGINE (OPTIMIZADO)
-        const canvas = document.getElementById('grid-canvas');
+        // ========== ESTRELLAS ANIMADAS CON PARALLAX ==========
+        const canvas = document.getElementById('starCanvas');
         const ctx = canvas.getContext('2d');
-        let w, h;
+        let stars = [];
+        let shootingStars = [];
+        let width, height;
 
-        function resize() {
-            w = canvas.width = window.innerWidth;
-            h = canvas.height = window.innerHeight;
+        function initStars() {
+            stars = [];
+            const starCount = 250;
+            for (let i = 0; i < starCount; i++) {
+                stars.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    radius: Math.random() * 2.5,
+                    alpha: Math.random() * 0.6 + 0.2,
+                    speed: 0.05 + Math.random() * 0.1,
+                    twinkle: Math.random() * Math.PI * 2
+                });
+            }
         }
-        window.addEventListener('resize', resize);
-        resize();
 
-        function drawGrid() {
-            ctx.clearRect(0, 0, w, h);
-            ctx.strokeStyle = 'rgba(204, 255, 0, 0.05)';
-            ctx.lineWidth = 1;
-            const size = 50;
+        function drawStars() {
+            ctx.clearRect(0, 0, width, height);
+            ctx.fillStyle = '#03050b';
+            ctx.fillRect(0, 0, width, height);
             
-            for(let x = 0; x < w; x += size) {
-                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+            for (let star of stars) {
+                ctx.beginPath();
+                const twinkleEffect = 0.5 + 0.5 * Math.sin(Date.now() * 0.002 * star.speed + star.twinkle);
+                ctx.fillStyle = `rgba(255, 240, 200, ${star.alpha * twinkleEffect})`;
+                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                ctx.fill();
             }
-            for(let y = 0; y < h; y += size) {
-                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+
+            // Dibujar estrellas fugaces
+            for (let i = 0; i < shootingStars.length; i++) {
+                const s = shootingStars[i];
+                ctx.beginPath();
+                ctx.moveTo(s.x, s.y);
+                ctx.lineTo(s.x - s.vx * 15, s.y - s.vy * 15);
+                ctx.strokeStyle = `rgba(255, 200, 100, ${s.alpha})`;
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.fillStyle = `rgba(255, 220, 120, ${s.alpha})`;
+                ctx.arc(s.x, s.y, 2, 0, Math.PI * 2);
+                ctx.fill();
+                
+                s.x += s.vx;
+                s.y += s.vy;
+                s.alpha -= 0.01;
+                if (s.alpha <= 0 || s.x > width + 50 || s.x < -50 || s.y > height + 50 || s.y < -50) {
+                    shootingStars.splice(i, 1);
+                    i--;
+                }
             }
         }
-        drawGrid();
 
-        // CLOCK SYSTEM
-        function updateClock() {
-            const now = new Date();
-            document.getElementById('clock').innerText = now.getHours().toString().padStart(2, '0') + ":" + 
-                                                        now.getMinutes().toString().padStart(2, '0') + ":" + 
-                                                        now.getSeconds().toString().padStart(2, '0');
+        function createShootingStar() {
+            if (Math.random() < 0.02) { // 2% de probabilidad por frame
+                const fromX = Math.random() * width;
+                const fromY = 0;
+                const angle = Math.PI / 4 + (Math.random() * Math.PI / 3);
+                const speed = 6 + Math.random() * 8;
+                shootingStars.push({
+                    x: fromX,
+                    y: fromY,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed,
+                    alpha: 0.8
+                });
+            }
         }
-        setInterval(updateClock, 1000);
 
-        // REVEAL ENGINE
-        const observerOptions = { threshold: 0.1 };
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('active');
-            });
-        }, observerOptions);
+        function animateStars() {
+            if (!ctx) return;
+            drawStars();
+            createShootingStar();
+            requestAnimationFrame(animateStars);
+        }
 
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        function resizeCanvas() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+            initStars();
+        }
 
-        // INTERACTIVITY
-        document.querySelectorAll('.bento-item').forEach(item => {
-            item.addEventListener('mouseenter', () => {
-                aura.style.width = '80px'; aura.style.height = '80px';
-                aura.style.borderColor = 'white';
-            });
-            item.addEventListener('mouseleave', () => {
-                aura.style.width = '50px'; aura.style.height = '50px';
-                aura.style.borderColor = 'var(--primary)';
-            });
+        window.addEventListener('resize', () => {
+            resizeCanvas();
         });
+        resizeCanvas();
+        animateStars();
+
+        // ========== INTERACTIVIDAD PRINCIPAL ==========
+        const exploreBtn = document.getElementById('exploreBtn');
+        const messageBox = document.getElementById('messageBox');
+        const tripCountSpan = document.getElementById('tripCount');
+        const spaceshipElem = document.getElementById('spaceship');
+        
+        let tripCounter = 0;
+        
+        // Banco de mensajes cósmicos
+        const cosmicMessages = [
+            "🌠 Has descubierto la Nebulosa Esmeralda. Sus gases brillan con vida propia. 🌠",
+            "🪐 Un planeta con anillos de diamante puro flota frente a ti. ¡Increíble! 🪐",
+            "✨ Una lluvia de meteoros de cristal cruza tu nave. ✨",
+            "🔭 Detectas una civilización avanzada en un exoplaneta lejano... 🔭",
+            "🌀 Entras en un agujero de gusano y viajas 100 años luz en segundos. 🌀",
+            "🌕 Encuentras una luna con océanos de magma fluorescente. 🌕",
+            "📡 Recibes una señal desconocida: 'Bienvenido, explorador estelar'. 📡",
+            "💫 Tu nave roza una supernova en formación, energía pura te rodea. 💫",
+            "🛸 Una flota de orbes luminosos te escolta amistosamente. 🛸",
+            "⭐ Has alcanzado el centro de la galaxia: un agujero negro supermasivo te observa. ⭐",
+            "🎆 Fuegos artificiales cósmicos celebran tu llegada a Andrómeda. 🎆",
+            "🌌 El silencio del espacio se rompe con un coro de pulsares. 🌌"
+        ];
+        
+        function getRandomMessage() {
+            return cosmicMessages[Math.floor(Math.random() * cosmicMessages.length)];
+        }
+        
+        // Efecto de animación en el mensaje (cambio con fade)
+        function updateMessageWithAnimation(newMessage) {
+            messageBox.style.transition = 'opacity 0.25s ease, transform 0.25s';
+            messageBox.style.opacity = '0';
+            messageBox.style.transform = 'scale(0.97)';
+            
+            setTimeout(() => {
+                messageBox.textContent = newMessage;
+                messageBox.style.opacity = '1';
+                messageBox.style.transform = 'scale(1)';
+            }, 200);
+            
+            setTimeout(() => {
+                messageBox.style.transition = '';
+            }, 500);
+        }
+        
+        // Crear partículas de impulso al hacer clic
+        function createImpulseParticles(x, y) {
+            for (let i = 0; i < 25; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'meteor';
+                const angle = Math.random() * Math.PI * 2;
+                const speed = 2 + Math.random() * 5;
+                const vx = Math.cos(angle) * speed;
+                const vy = Math.sin(angle) * speed;
+                const size = 3 + Math.random() * 6;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.background = `radial-gradient(circle, #ffaa44, #ff6633)`;
+                particle.style.left = `${x + (Math.random() - 0.5) * 40}px`;
+                particle.style.top = `${y + (Math.random() - 0.5) * 40}px`;
+                particle.style.position = 'fixed';
+                particle.style.borderRadius = '50%';
+                particle.style.pointerEvents = 'none';
+                particle.style.zIndex = '100';
+                particle.style.opacity = '1';
+                document.body.appendChild(particle);
+                
+                let posX = parseFloat(particle.style.left);
+                let posY = parseFloat(particle.style.top);
+                let opacity = 1;
+                
+                function animateParticle() {
+                    posX += vx;
+                    posY += vy;
+                    opacity -= 0.025;
+                    particle.style.left = `${posX}px`;
+                    particle.style.top = `${posY}px`;
+                    particle.style.opacity = opacity;
+                    particle.style.transform = `scale(${opacity})`;
+                    if (opacity <= 0) {
+                        particle.remove();
+                        return;
+                    }
+                    requestAnimationFrame(animateParticle);
+                }
+                requestAnimationFrame(animateParticle);
+            }
+        }
+        
+        // Efecto de vibración en la nave (animación rápida)
+        function spaceshipBoost() {
+            spaceshipElem.style.animation = 'none';
+            spaceshipElem.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                spaceshipElem.style.animation = 'float 3s ease-in-out infinite';
+                spaceshipElem.style.transform = 'scale(1)';
+            }, 200);
+        }
+        
+        // Función principal de exploración
+        function exploreJourney() {
+            // Incrementar contador
+            tripCounter++;
+            tripCountSpan.textContent = tripCounter;
+            
+            // Mensaje aleatorio
+            const newMsg = getRandomMessage();
+            updateMessageWithAnimation(newMsg);
+            
+            // Efecto de impulso en la nave (posición relativa al botón o centro)
+            const btnRect = exploreBtn.getBoundingClientRect();
+            const centerX = btnRect.left + btnRect.width / 2;
+            const centerY = btnRect.top + btnRect.height / 2;
+            createImpulseParticles(centerX, centerY);
+            
+            // Boost de la nave
+            spaceshipBoost();
+            
+            // Crear un destello en el canvas (cambiar fondo momentáneo)
+            const flashOverlay = document.createElement('div');
+            flashOverlay.style.position = 'fixed';
+            flashOverlay.style.top = '0';
+            flashOverlay.style.left = '0';
+            flashOverlay.style.width = '100%';
+            flashOverlay.style.height = '100%';
+            flashOverlay.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+            flashOverlay.style.pointerEvents = 'none';
+            flashOverlay.style.zIndex = '999';
+            flashOverlay.style.animation = 'fadeOut 0.4s forwards';
+            document.body.appendChild(flashOverlay);
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeOut {
+                    0% { opacity: 0.7; }
+                    100% { opacity: 0; visibility: hidden; }
+                }
+            `;
+            document.head.appendChild(style);
+            setTimeout(() => {
+                flashOverlay.remove();
+                style.remove();
+            }, 400);
+            
+            // También crear una estrella fugaz al presionar el botón
+            if (Math.random() > 0.5) {
+                setTimeout(() => {
+                    const fakeStar = {
+                        x: Math.random() * width,
+                        y: Math.random() * height * 0.3,
+                        vx: 8 + Math.random() * 10,
+                        vy: 5 + Math.random() * 8,
+                        alpha: 0.9
+                    };
+                    shootingStars.push(fakeStar);
+                }, 100);
+            }
+        }
+        
+        exploreBtn.addEventListener('click', exploreJourney);
+        
+        // También permitir hacer clic en la nave para explorar
+        spaceshipElem.addEventListener('click', (e) => {
+            e.stopPropagation();
+            exploreJourney();
+        });
+        
+        // Mensaje sorpresa si el contador llega a 10
+        let milestoneReached = false;
+        const observer = new MutationObserver(() => {
+            if (tripCounter === 10 && !milestoneReached) {
+                milestoneReached = true;
+                setTimeout(() => {
+                    updateMessageWithAnimation("🏆 ¡HITO CÓSMICO! Has completado 10 viajes. La galaxia te reconoce como Explorador Estelar 🏆");
+                }, 300);
+                setTimeout(() => {
+                    milestoneReached = false;
+                }, 5000);
+            }
+            if (tripCounter === 25) {
+                updateMessageWithAnimation("✨✨ ERES UNA LEYENDA INTERGALÁCTICA ✨✨");
+            }
+        });
+        observer.observe(tripCountSpan, { childList: true, subtree: true, characterData: true });
+        
+        // Efecto parallax con el mouse (movimiento sutil de la nave y título)
+        document.addEventListener('mousemove', (e) => {
+            const mouseX = e.clientX / window.innerWidth;
+            const mouseY = e.clientY / window.innerHeight;
+            const moveX = (mouseX - 0.5) * 20;
+            const moveY = (mouseY - 0.5) * 20;
+            spaceshipElem.style.transform = `translate(${moveX * 0.3}px, ${moveY * 0.3}px)`;
+            const title = document.querySelector('.title');
+            if (title) {
+                title.style.transform = `translate(${moveX * 0.1}px, ${moveY * 0.1}px)`;
+            }
+        });
+        
+        // Reiniciar transform después de mouseleave (opcional)
+        document.body.addEventListener('mouseleave', () => {
+            spaceshipElem.style.transform = 'translate(0px, 0px)';
+            const title = document.querySelector('.title');
+            if (title) title.style.transform = 'translate(0px, 0px)';
+        });
+        
+        // Pequeño toast de bienvenida interactiva
+        setTimeout(() => {
+            updateMessageWithAnimation("🛸 ¡Bienvenido/a al espacio infinito! Haz clic para explorar. 🛸");
+        }, 800);
     </script>
 </body>
-</html>
+    </html>
