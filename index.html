@@ -2,627 +2,434 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>KEOGLITCH · Experiencia Psicodélica</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>KECOMU · esencia sintética</title>
     <style>
+        /* reset con vibra */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            user-select: none;
         }
 
         body {
+            background: #0a0004;
+            background-image: radial-gradient(circle at 15% 30%, rgba(255, 60, 100, 0.08) 2%, transparent 2.5%),
+                              radial-gradient(circle at 75% 70%, rgba(200, 100, 255, 0.06) 1.8%, transparent 2%);
+            background-size: 48px 48px, 64px 64px;
+            padding: 1.8rem;
+            font-family: 'Inter Variable', system-ui, 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont;
+            color: #ede7f0;
             min-height: 100vh;
-            background: radial-gradient(circle at center, #000000, #0a0015);
-            font-family: 'Courier New', 'Fira Code', monospace;
-            overflow-x: hidden;
-            position: relative;
-            animation: bodyPulse 0.2s infinite alternate;
+            transition: background 0.2s ease;
         }
 
-        @keyframes bodyPulse {
-            0% { background: radial-gradient(circle at center, #000000, #0a0015); }
-            100% { background: radial-gradient(circle at center, #1a0030, #2a0040); }
+        /* neblina animada base */
+        @keyframes aparecerEtereo {
+            0% {
+                opacity: 0;
+                transform: translateY(2rem) scale(0.96);
+                filter: blur(12px);
+                border-color: rgba(255, 180, 180, 0.8);
+            }
+            35% {
+                opacity: 0.7;
+                transform: translateY(-0.2rem) scale(1.005);
+                filter: blur(4px);
+                background: rgba(120, 50, 70, 0.2);
+            }
+            100% {
+                opacity: 0.92;
+                transform: translateY(0) scale(1);
+                filter: blur(0.3px);
+                background: rgba(20, 5, 12, 0.45);
+                backdrop-filter: blur(12px);
+                border: 1px solid rgba(255, 190, 200, 0.35);
+                color: #f2e8fc;
+            }
         }
 
-        /* GLITCH OVERLAY PRINCIPAL */
-        .glitch-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 999;
-            mix-blend-mode: screen;
-            animation: glitchFlash 0.15s infinite;
+        .fragmento {
+            animation: aparecerEtereo 1.3s cubic-bezier(0.2, 0.9, 0.3, 1.1) forwards;
+            border-radius: 2rem;
         }
 
-        @keyframes glitchFlash {
-            0%, 100% { background: rgba(255, 0, 255, 0); box-shadow: none; }
-            25% { background: rgba(255, 0, 255, 0.1); box-shadow: 0 0 50px rgba(255, 0, 255, 0.3); }
-            50% { background: rgba(0, 255, 255, 0.1); box-shadow: 0 0 50px rgba(0, 255, 255, 0.3); }
-            75% { background: rgba(255, 255, 0, 0.1); box-shadow: 0 0 50px rgba(255, 255, 0, 0.3); }
+        .card-principal {
+            padding: 2rem 2rem;
+            margin-bottom: 1.8rem;
+            border-radius: 2rem;
         }
 
-        /* CONTENEDOR PRINCIPAL */
-        .container {
-            position: relative;
-            z-index: 10;
-            padding: 20px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        /* TÍTULO CON EFECTO CINEMATOGRÁFICO */
-        .title-section {
-            text-align: center;
-            margin: 40px 0;
-            position: relative;
-            animation: titleCinematic 0.5s infinite alternate;
-        }
-
-        @keyframes titleCinematic {
-            0% { transform: skew(0deg) scale(1); text-shadow: 0 0 10px cyan, 0 0 20px magenta; }
-            100% { transform: skew(2deg) scale(1.02); text-shadow: 0 0 20px magenta, 0 0 40px cyan; }
-        }
-
-        h1 {
-            font-size: 4rem;
-            font-weight: 900;
-            background: linear-gradient(45deg, #ff0066, #00ffcc, #ff3300, #ff00ff);
-            background-size: 300% 300%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            animation: gradientShift 0.3s infinite, textGlitch 0.1s infinite;
-            letter-spacing: 5px;
-        }
-
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
-        }
-
-        @keyframes textGlitch {
-            0%, 100% { transform: translate(0, 0); }
-            25% { transform: translate(-2px, 1px); }
-            75% { transform: translate(2px, -1px); }
-        }
-
-        .subtitle {
-            color: #ff66cc;
-            font-size: 0.9rem;
-            letter-spacing: 3px;
-            animation: blinkSub 0.1s infinite alternate;
-        }
-
-        @keyframes blinkSub {
-            from { opacity: 0.6; text-shadow: 0 0 5px magenta; }
-            to { opacity: 1; text-shadow: 0 0 15px cyan; }
-        }
-
-        /* TARJETAS PSICODÉLICAS */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin: 40px 0;
-        }
-
-        .card {
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 25px;
-            transition: all 0.05s linear;
-            cursor: pointer;
-            border: 2px solid;
-            animation: cardBorderShift 0.2s infinite alternate;
-            position: relative;
-            overflow: hidden;
-        }
-
-        @keyframes cardBorderShift {
-            0% { border-color: #ff0066; box-shadow: 0 0 10px rgba(255, 0, 102, 0.5); }
-            50% { border-color: #00ffcc; box-shadow: 0 0 20px rgba(0, 255, 204, 0.8); }
-            100% { border-color: #ff6600; box-shadow: 0 0 10px rgba(255, 102, 0, 0.5); }
-        }
-
-        .card:hover {
-            transform: scale(1.02) rotate(1deg);
-            animation: cardHoverGlitch 0.1s infinite;
-        }
-
-        @keyframes cardHoverGlitch {
-            0% { transform: translate(0, 0); background: rgba(255, 0, 100, 0.3); }
-            25% { transform: translate(-3px, 2px); background: rgba(0, 255, 200, 0.3); }
-            75% { transform: translate(3px, -2px); background: rgba(255, 255, 0, 0.3); }
-        }
-
-        .card h3 {
-            font-size: 1.8rem;
-            margin-bottom: 15px;
-            animation: titleColorShift 0.15s infinite;
-        }
-
-        @keyframes titleColorShift {
-            0% { color: #ff3366; }
-            50% { color: #33ffcc; }
-            100% { color: #ffcc33; }
-        }
-
-        .card p {
-            color: #ccc;
-            line-height: 1.6;
-            animation: textPulse 0.3s infinite alternate;
-        }
-
-        @keyframes textPulse {
-            from { opacity: 0.7; text-shadow: 0 0 2px magenta; }
-            to { opacity: 1; text-shadow: 0 0 5px cyan; }
-        }
-
-        /* BOTONES LOCO */
-        .button-panel {
+        .galaxia {
             display: flex;
-            gap: 15px;
-            justify-content: center;
             flex-wrap: wrap;
-            margin: 40px 0;
+            justify-content: space-between;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
         }
 
-        .psycho-btn {
-            background: linear-gradient(45deg, #ff0066, #ff3300);
-            border: none;
-            padding: 15px 30px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            font-family: monospace;
-            color: white;
-            cursor: pointer;
-            border-radius: 50px;
-            animation: btnPulse 0.1s infinite alternate;
-            transition: all 0.05s linear;
-            position: relative;
-            overflow: hidden;
-        }
-
-        @keyframes btnPulse {
-            0% { transform: scale(1); box-shadow: 0 0 5px red; }
-            100% { transform: scale(1.05); box-shadow: 0 0 25px magenta; }
-        }
-
-        .psycho-btn:active {
-            transform: scale(0.95);
-            animation: none;
-        }
-
-        /* CONTADOR EPILÉPTICO */
-        .counter-box {
+        .estrella {
+            flex: 1;
+            min-width: 130px;
+            padding: 1rem 0.5rem;
             text-align: center;
-            margin: 30px 0;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 15px;
-            animation: counterFlash 0.2s infinite alternate;
+            font-size: 0.85rem;
+            letter-spacing: 0.3px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            border-radius: 3rem;
+            font-weight: 470;
         }
 
-        @keyframes counterFlash {
-            0% { background: rgba(255, 0, 100, 0.3); border-left: 5px solid magenta; }
-            100% { background: rgba(0, 255, 200, 0.3); border-right: 5px solid cyan; }
+        .estrella:hover {
+            transform: translateY(-3px) scale(1.02);
+            background: rgba(255, 220, 240, 0.12);
+            backdrop-filter: blur(4px);
+            text-shadow: 0 0 2px rgba(255,200,220,0.5);
         }
 
-        .counter-number {
-            font-size: 3rem;
-            font-weight: bold;
-            animation: numberShake 0.05s infinite;
+        .constelacion {
+            flex: 1;
+            padding: 1.5rem;
+            border-radius: 1.8rem;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+            cursor: pointer;
         }
 
-        @keyframes numberShake {
-            0%, 100% { transform: translate(0, 0); }
-            25% { transform: translate(-2px, 1px); }
-            75% { transform: translate(2px, -1px); }
+        .constelacion:hover {
+            background: rgba(80, 35, 55, 0.4);
+            transform: scale(0.99);
         }
 
-        /* EFECTO RASTRO DE RATÓN */
-        .trail {
-            position: fixed;
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            animation: trailFade 0.5s forwards;
-            mix-blend-mode: screen;
+        .secuencia-1 { animation-delay: 0.05s; }
+        .secuencia-2 { animation-delay: 0.25s; }
+        .secuencia-3 { animation-delay: 0.45s; }
+        .bloque-lento { animation-delay: 0.8s; }
+
+        hr {
+            border: none;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 180, 200, 0.5), transparent);
+            margin: 0.9rem 0;
         }
 
-        @keyframes trailFade {
-            0% { opacity: 1; transform: scale(1); background: magenta; }
-            100% { opacity: 0; transform: scale(0); background: cyan; }
+        .boton-nave {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 2rem;
         }
 
-        /* MATRIZ DE PARTÍCULAS */
-        #particleCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 5;
+        .btn-sutil {
+            background: rgba(25, 10, 18, 0.65);
+            backdrop-filter: blur(8px);
+            border: 0.8px solid rgba(255, 170, 190, 0.4);
+            padding: 0.5rem 1.5rem;
+            border-radius: 3rem;
+            color: #f3eaff;
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            font-family: inherit;
+            animation: aparecerEtereo 1s forwards;
+            animation-delay: 0.3s;
+            opacity: 0;
         }
 
-        /* MENSAJE FLOTANTE RANDOM */
-        .floating-text {
-            position: fixed;
-            pointer-events: none;
-            z-index: 1000;
-            font-weight: bold;
-            font-size: 1rem;
-            animation: floatUp 1s forwards;
-            white-space: nowrap;
+        .btn-sutil:hover {
+            background: #2c1020;
+            border-color: #ffb7c7;
+            transform: scale(0.97);
+            letter-spacing: 1px;
         }
 
-        @keyframes floatUp {
-            0% { opacity: 1; transform: translateY(0) rotate(0deg); }
-            100% { opacity: 0; transform: translateY(-100px) rotate(360deg); }
+        /* modo claro elegante */
+        body.modo-luz {
+            background: #efe6fc;
+            background-image: radial-gradient(#d9ccec 1px, transparent 1px);
+            background-size: 28px 28px;
+            color: #1d1528;
         }
 
-        /* RESPONSIVE */
-        @media (max-width: 768px) {
-            h1 { font-size: 2rem; }
-            .card h3 { font-size: 1.3rem; }
-            .psycho-btn { padding: 10px 20px; font-size: 0.9rem; }
+        body.modo-luz .fragmento {
+            background: rgba(240, 235, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(90, 60, 110, 0.3);
+            color: #1a1028;
+        }
+
+        body.modo-luz .estrella:hover {
+            background: rgba(110, 80, 140, 0.15);
+        }
+
+        body.modo-luz .btn-sutil {
+            background: rgba(230, 220, 250, 0.7);
+            border-color: #b194cc;
+            color: #2a1c3a;
+        }
+
+        body.modo-luz .btn-sutil:hover {
+            background: #d9caf0;
+        }
+
+        body.modo-luz hr {
+            background: linear-gradient(90deg, transparent, #aa8ec9, transparent);
+        }
+
+        /* ajustes responsive */
+        @media (max-width: 780px) {
+            body { padding: 1.2rem; }
+            .galaxia { flex-direction: column; }
+            .constelacion { min-height: auto; }
+        }
+
+        /* micro tipografía especial */
+        .neon-sutil {
+            font-weight: 450;
+            letter-spacing: -0.2px;
+        }
+
+        .titular-glow {
+            font-size: 2.2rem;
+            font-weight: 540;
+            background: linear-gradient(135deg, #FFDEE9, #FFB5CC);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        body.modo-luz .titular-glow {
+            background: linear-gradient(135deg, #a370c0, #5e3c7a);
+            background-clip: text;
+            -webkit-background-clip: text;
+        }
+
+        .badge-vers {
+            font-size: 0.7rem;
+            opacity: 0.7;
+        }
+
+        .texto-brillo {
+            transition: all 0.2s;
         }
     </style>
 </head>
 <body>
 
-    <div class="glitch-overlay"></div>
-    <canvas id="particleCanvas"></canvas>
+<div class="boton-nave">
+    <button class="btn-sutil" onclick="location.href='configuraciones.html'">
+        ✦ órbita de ajustes ✦
+    </button>
+</div>
 
-    <div class="container">
-        <div class="title-section">
-            <h1>⚡ KEOGLITCH ⚡</h1>
-            <div class="subtitle">〘 EXPERIENCIA PSICODÉLICA 〙</div>
-        </div>
+<!-- carta principal: identidad -->
+<div class="fragmento card-principal secuencia-1">
+    <div class="titular-glow">⌘ kecomu</div>
+    <hr>
+    <div style="font-size: 0.8rem; opacity: 0.85;">〣 IA para desarrollo web · esencia sintética 〣</div>
+</div>
 
-        <div class="grid">
-            <div class="card" data-glitch="true">
-                <h3>🌀 VISIÓN DISTORSIONADA</h3>
-                <p>La realidad se quiebra frente a tus ojos. Colores que no existen. Frecuencias que vibran en tu percepción. Bienvenido al caos organizado.</p>
-            </div>
-            <div class="card" data-glitch="true">
-                <h3>⚡ GLITCH ACTIVADO</h3>
-                <p>Errores controlados. Ruido visual. La máquina respira. Cada segundo es único, irrepetible, como un destello en la oscuridad.</p>
-            </div>
-            <div class="card" data-glitch="true">
-                <h3>🎬 CINEMATOGRAFÍA ALTERNA</h3>
-                <p>Secuencias hipnóticas. Transiciones agresivas. El estilo Comuza vive en cada píxel. Siente la energía cruda del código.</p>
-            </div>
-        </div>
+<!-- primera fila: tres destellos (cards pequeñas) -->
+<div class="galaxia">
+    <div class="fragmento estrella secuencia-2" onclick="location.href='actua.html'">
+        <span style="font-size: 1.4rem; display: block;">✦</span>
+        <strong>novedades</strong><br>el pulso
+    </div>
+    <div class="fragmento estrella secuencia-2" onclick="location.href='Poder.html'">
+        <span style="font-size: 1.4rem; display: block;">◈</span>
+        <strong>html · css · js</strong><br>trinidad creativa
+    </div>
+    <div class="fragmento estrella secuencia-2" onclick="location.href='Datos.html'">
+        <span style="font-size: 1.4rem; display: block;">🜟</span>
+        <strong>políticas</strong><br>resguardo ético
+    </div>
+</div>
 
-        <div class="button-panel">
-            <button class="psycho-btn" id="flashBtn">💥 EXPLOSIÓN CROMÁTICA 💥</button>
-            <button class="psycho-btn" id="chaosBtn">🌀 CAOS TOTAL 🌀</button>
-            <button class="psycho-btn" id="resetBtn">✨ RESET NEURONAL ✨</button>
-        </div>
-
-        <div class="counter-box">
-            <div style="font-size: 0.8rem; letter-spacing: 2px;">〘 DESTELLOS REGISTRADOS 〙</div>
-            <div class="counter-number" id="flashCounter">0</div>
-        </div>
-
-        <div class="grid">
-            <div class="card">
-                <h3>🎨 ESTILO COMUZA</h3>
-                <p>Colores epilépticos • Cambios rápidos • Animaciones cinematográficas • Efectos glitch • Experiencia inmersiva</p>
-            </div>
-            <div class="card">
-                <h3>🔮 FRECUENCIAS OCULTAS</h3>
-                <p>+ Velocidad variable + Efectos estroboscópicos + Distorsión perceptual + Realidad aumentada virtual</p>
-            </div>
-        </div>
+<!-- segunda fila: tres constelaciones (cards grandes) -->
+<div class="galaxia">
+    <!-- Nova -->
+    <div class="fragmento constelacion bloque-lento" onclick="location.href='Nova.html'">
+        <div><span style="font-weight: 500; color: #d3b2ff;">kecomu</span> <span style="font-weight: 600; color: #b87eff;">✦ nova</span></div>
+        <hr>
+        <div class="neon-sutil">Código fluido, arquitectura sin fricción. Optimización como mantra.</div>
+        <hr>
+        <span class="badge-vers">⟡ recomienda Nova para flexibilidad extrema</span>
+        <hr>
+        <span class="badge-vers">⟡ Kero → alma gráfica · Umwarimu → aprendizaje vivo</span>
     </div>
 
-    <script>
-        // ========== PARTÍCULAS LOCAS ==========
-        const canvas = document.getElementById('particleCanvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        let width, height;
+    <!-- Kero -->
+    <div class="fragmento constelacion bloque-lento" onclick="location.href='Kero.html'">
+        <div><span style="font-weight: 500; color: #d3b2ff;">kecomu</span> <span style="font-weight: 600; color: #ff98c1;">✧ kero</span></div>
+        <hr>
+        <div class="neon-sutil">Estética digital, diseño con alma. Píxeles que respiran emoción.</div>
+        <hr>
+        <span class="badge-vers">⟡ ideal para identidad visual + interfaces magnéticas</span>
+        <hr>
+        <span class="badge-vers">⟡ Nova para estructura · Umwarimu para guía</span>
+    </div>
 
-        function resizeCanvas() {
-            width = window.innerWidth;
-            height = window.innerHeight;
-            canvas.width = width;
-            canvas.height = height;
-        }
+    <!-- Umwarimu -->
+    <div class="fragmento constelacion bloque-lento" onclick="location.href='Umwarimu.html'">
+        <div><span style="font-weight: 500; color: #d3b2ff;">kecomu</span> <span style="font-weight: 600; color: #ff8a7a;">◌ umwarimu</span></div>
+        <hr>
+        <div class="neon-sutil">Aprendizaje profundo mientras construyes. Mentora silenciosa de código.</div>
+        <hr>
+        <span class="badge-vers">⟵ ideal para quienes dan primeros pasos o desean comprensión total</span>
+        <hr>
+        <span class="badge-vers">Nova / Kero potencia bruta · Umwarimu, sabiduría</span>
+    </div>
+</div>
 
-        class Particle {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.size = Math.random() * 4 + 1;
-                this.speedX = (Math.random() - 0.5) * 3;
-                this.speedY = (Math.random() - 0.5) * 3;
-                this.color = `hsl(${Math.random() * 360}, 100%, 60%)`;
-                this.life = 1;
-                this.decay = 0.01 + Math.random() * 0.02;
-            }
-            
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                this.life -= this.decay;
-                
-                if (this.x > width) this.x = 0;
-                if (this.x < 0) this.x = width;
-                if (this.y > height) this.y = 0;
-                if (this.y < 0) this.y = height;
-                
-                return this.life > 0;
-            }
-            
-            draw() {
-                ctx.fillStyle = this.color;
-                ctx.globalAlpha = this.life * 0.8;
-                ctx.fillRect(this.x, this.y, this.size, this.size);
-            }
-        }
+<script>
+    // helpers de cookies (mismo core)
+    function getCookie(nombre) {
+        const match = document.cookie.match(new RegExp('(^| )' + nombre + '=([^;]+)'));
+        return match ? match[2] : null;
+    }
 
-        function initParticles(count) {
-            particles = [];
-            for (let i = 0; i < count; i++) {
-                particles.push(new Particle());
-            }
-        }
+    function aplicarAnimacionDesdeCookie() {
+        const animQuality = getCookie('kecomu_animacion');
+        const styleAnim = document.getElementById('estilo-anim-dinamico');
+        if (styleAnim) styleAnim.remove();
 
-        function animateParticles() {
-            if (!ctx) return;
-            ctx.clearRect(0, 0, width, height);
-            
-            for (let i = 0; i < particles.length; i++) {
-                const alive = particles[i].update();
-                particles[i].draw();
-                if (!alive) {
-                    particles[i] = new Particle();
+        if (!animQuality) return;
+
+        const newStyle = document.createElement('style');
+        newStyle.id = 'estilo-anim-dinamico';
+
+        if (animQuality === 'baja') {
+            newStyle.textContent = `
+                @keyframes fadeSimple {
+                    0% { opacity: 0; }
+                    100% { opacity: 0.92; background: rgba(20,5,12,0.45); backdrop-filter: blur(12px); border: 1px solid rgba(255,190,200,0.35);}
                 }
-            }
-            requestAnimationFrame(animateParticles);
-        }
-
-        window.addEventListener('resize', () => {
-            resizeCanvas();
-            initParticles(150);
-        });
-        
-        resizeCanvas();
-        initParticles(200);
-        animateParticles();
-
-        // ========== EFECTO RASTRO DEL MOUSE ==========
-        let trailTimeout;
-        document.addEventListener('mousemove', (e) => {
-            const trail = document.createElement('div');
-            trail.className = 'trail';
-            trail.style.left = e.clientX - 7 + 'px';
-            trail.style.top = e.clientY - 7 + 'px';
-            document.body.appendChild(trail);
-            
-            setTimeout(() => {
-                trail.remove();
-            }, 500);
-        });
-
-        // ========== CONTADOR Y EFECTOS LOCOS ==========
-        let flashCount = 0;
-        const flashCounterElem = document.getElementById('flashCounter');
-        const flashBtn = document.getElementById('flashBtn');
-        const chaosBtn = document.getElementById('chaosBtn');
-        const resetBtn = document.getElementById('resetBtn');
-        
-        // Función para crear explosión de colores
-        function createColorExplosion(x, y) {
-            for (let i = 0; i < 50; i++) {
-                const angle = Math.random() * Math.PI * 2;
-                const speed = 2 + Math.random() * 8;
-                const vx = Math.cos(angle) * speed;
-                const vy = Math.sin(angle) * speed;
-                const particleDiv = document.createElement('div');
-                particleDiv.style.position = 'fixed';
-                particleDiv.style.left = x + 'px';
-                particleDiv.style.top = y + 'px';
-                particleDiv.style.width = '5px';
-                particleDiv.style.height = '5px';
-                particleDiv.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 60%)`;
-                particleDiv.style.borderRadius = '50%';
-                particleDiv.style.pointerEvents = 'none';
-                particleDiv.style.zIndex = '10000';
-                document.body.appendChild(particleDiv);
-                
-                let posX = x, posY = y;
-                let opacity = 1;
-                function animateExplosion() {
-                    posX += vx;
-                    posY += vy;
-                    opacity -= 0.02;
-                    particleDiv.style.left = posX + 'px';
-                    particleDiv.style.top = posY + 'px';
-                    particleDiv.style.opacity = opacity;
-                    if (opacity <= 0) {
-                        particleDiv.remove();
-                        return;
-                    }
-                    requestAnimationFrame(animateExplosion);
+                body.modo-luz @keyframes fadeSimple {
+                    100% { background: rgba(240,235,255,0.7); border-color: rgba(90,60,110,0.3); color: #1a1028; opacity: 1; }
                 }
-                requestAnimationFrame(animateExplosion);
-            }
-        }
-        
-        // Función para crear texto flotante
-        function createFloatingText(text, x, y) {
-            const floatText = document.createElement('div');
-            floatText.className = 'floating-text';
-            floatText.textContent = text;
-            floatText.style.left = x + 'px';
-            floatText.style.top = y + 'px';
-            floatText.style.color = `hsl(${Math.random() * 360}, 100%, 60%)`;
-            floatText.style.fontSize = (Math.random() * 20 + 12) + 'px';
-            document.body.appendChild(floatText);
-            setTimeout(() => floatText.remove(), 1000);
-        }
-        
-        // Flash intenso
-        function intenseFlash() {
-            flashCount++;
-            flashCounterElem.textContent = flashCount;
-            flashCounterElem.style.animation = 'none';
-            setTimeout(() => {
-                flashCounterElem.style.animation = 'numberShake 0.05s infinite';
-            }, 10);
-            
-            // Overlay de flash
-            const flashOverlay = document.createElement('div');
-            flashOverlay.style.position = 'fixed';
-            flashOverlay.style.top = '0';
-            flashOverlay.style.left = '0';
-            flashOverlay.style.width = '100%';
-            flashOverlay.style.height = '100%';
-            flashOverlay.style.backgroundColor = `hsla(${Math.random() * 360}, 100%, 60%, 0.7)`;
-            flashOverlay.style.pointerEvents = 'none';
-            flashOverlay.style.zIndex = '9998';
-            document.body.appendChild(flashOverlay);
-            
-            setTimeout(() => {
-                flashOverlay.style.transition = 'opacity 0.1s';
-                flashOverlay.style.opacity = '0';
-                setTimeout(() => flashOverlay.remove(), 100);
-            }, 50);
-            
-            // Cambiar colores de fondo rápido
-            document.body.style.animation = 'none';
-            setTimeout(() => {
-                document.body.style.animation = 'bodyPulse 0.2s infinite alternate';
-            }, 10);
-            
-            // Crear explosión en posición aleatoria
-            const randomX = Math.random() * window.innerWidth;
-            const randomY = Math.random() * window.innerHeight;
-            createColorExplosion(randomX, randomY);
-            
-            // Textos flotantes
-            const messages = ['⚡ GLITCH!', '🌀 CAOS', '💥 BOOM', '🌈 PSYCHEDELIC', '🎬 CINEMA', '🔥 COMUZA', '✨ VISIÓN'];
-            createFloatingText(messages[Math.floor(Math.random() * messages.length)], randomX, randomY);
-            
-            // Efecto de vibración en todas las cards
-            document.querySelectorAll('.card').forEach(card => {
-                card.style.transform = `translate(${Math.random() * 10 - 5}px, ${Math.random() * 10 - 5}px)`;
-                setTimeout(() => {
-                    card.style.transform = '';
-                }, 100);
-            });
-        }
-        
-        // Caos total - múltiples flashes
-        function totalChaos() {
-            let chaosCount = 0;
-            const chaosInterval = setInterval(() => {
-                intenseFlash();
-                chaosCount++;
-                if (chaosCount >= 15) {
-                    clearInterval(chaosInterval);
-                    createFloatingText('🌀 CAOS CONTROLADO 🌀', window.innerWidth/2, window.innerHeight/2);
+                .fragmento, .btn-sutil {
+                    animation: fadeSimple 0.45s ease forwards !important;
+                    transform: none !important;
+                    filter: none !important;
                 }
-            }, 80);
+                .secuencia-1 { animation-delay: 0s !important; }
+                .secuencia-2 { animation-delay: 0.08s !important; }
+                .secuencia-3 { animation-delay: 0.12s !important; }
+                .bloque-lento { animation-delay: 0.2s !important; }
+                .btn-sutil { animation-delay: 0.25s !important; }
+            `;
+        } 
+        else if (animQuality === 'intermedia') {
+            newStyle.textContent = `
+                @keyframes slideUp {
+                    0% { opacity: 0; transform: translateY(1.8rem); }
+                    100% { opacity: 0.92; transform: translateY(0); background: rgba(20,5,12,0.45); backdrop-filter: blur(12px); border: 1px solid rgba(255,190,200,0.35);}
+                }
+                body.modo-luz @keyframes slideUp {
+                    100% { background: rgba(240,235,255,0.7); border-color: rgba(90,60,110,0.3); color:#1a1028; }
+                }
+                .fragmento, .btn-sutil {
+                    animation: slideUp 1s cubic-bezier(0.2,0.9,0.3,1.1) forwards !important;
+                }
+                .secuencia-1 { animation-delay: 0s !important; }
+                .secuencia-2 { animation-delay: 0.2s !important; }
+                .secuencia-3 { animation-delay: 0.4s !important; }
+                .bloque-lento { animation-delay: 0.7s !important; }
+                .btn-sutil { animation-delay: 0.5s !important; }
+            `;
         }
-        
-        // Reset neuronal
-        function resetNeuronal() {
-            flashCount = 0;
-            flashCounterElem.textContent = '0';
-            createFloatingText('✨ RESET NEURONAL ✨', window.innerWidth/2, window.innerHeight/2);
-            
-            // Efecto de limpieza visual
-            const cleanFlash = document.createElement('div');
-            cleanFlash.style.position = 'fixed';
-            cleanFlash.style.top = '0';
-            cleanFlash.style.left = '0';
-            cleanFlash.style.width = '100%';
-            cleanFlash.style.height = '100%';
-            cleanFlash.style.backgroundColor = 'white';
-            cleanFlash.style.pointerEvents = 'none';
-            cleanFlash.style.zIndex = '9999';
-            cleanFlash.style.animation = 'fadeOutClean 0.5s forwards';
-            document.body.appendChild(cleanFlash);
-            
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes fadeOutClean {
-                    0% { opacity: 1; }
-                    100% { opacity: 0; visibility: hidden; }
+        else if (animQuality === 'alta') {
+            newStyle.textContent = `
+                .fragmento, .btn-sutil {
+                    animation: aparecerEtereo 1.3s cubic-bezier(0.2,0.9,0.3,1.1) forwards !important;
+                }
+                .secuencia-1 { animation-delay: 0.05s !important; }
+                .secuencia-2 { animation-delay: 0.25s !important; }
+                .secuencia-3 { animation-delay: 0.45s !important; }
+                .bloque-lento { animation-delay: 0.8s !important; }
+                .btn-sutil { animation-delay: 0.3s !important; }
+            `;
+        }
+        document.head.appendChild(newStyle);
+    }
+
+    function aplicarModoAltaLegibilidad() {
+        const altaLectura = getCookie('kecomu_claridad');
+        const existingReadStyle = document.getElementById('estilo-lectura-plus');
+        if (existingReadStyle) existingReadStyle.remove();
+
+        if (altaLectura === 'true') {
+            const readStyle = document.createElement('style');
+            readStyle.id = 'estilo-lectura-plus';
+            readStyle.textContent = `
+                .fragmento {
+                    backdrop-filter: none !important;
+                    background: rgba(10, 2, 8, 0.94) !important;
+                    border: 1.8px solid rgba(255,220,240,0.7) !important;
+                    filter: none !important;
+                    opacity: 1 !important;
+                    color: #fef7ff !important;
+                }
+                body.modo-luz .fragmento {
+                    background: #ffffffdd !important;
+                    border: 1.8px solid #6b4e8e !important;
+                    color: #1e172a !important;
+                }
+                body {
+                    font-size: 1.1rem !important;
+                }
+                .estrella, .constelacion {
+                    font-size: 1rem !important;
+                }
+                .titular-glow {
+                    font-size: 2.6rem !important;
+                }
+                .btn-sutil {
+                    background: #000000aa !important;
+                    backdrop-filter: none !important;
+                    font-size: 0.75rem !important;
+                    padding: 0.6rem 1.8rem !important;
+                }
+                body.modo-luz .btn-sutil {
+                    background: #e2d4fc !important;
+                    color: #231b33;
+                }
+                hr {
+                    height: 1.5px !important;
+                    background: rgba(210,170,240,0.8) !important;
                 }
             `;
-            document.head.appendChild(style);
-            setTimeout(() => {
-                cleanFlash.remove();
-                style.remove();
-            }, 500);
+            document.head.appendChild(readStyle);
         }
-        
-        // Event listeners
-        flashBtn.addEventListener('click', (e) => {
-            intenseFlash();
-            const rect = e.target.getBoundingClientRect();
-            createColorExplosion(rect.left + rect.width/2, rect.top + rect.height/2);
-        });
-        
-        chaosBtn.addEventListener('click', () => {
-            totalChaos();
-        });
-        
-        resetBtn.addEventListener('click', () => {
-            resetNeuronal();
-        });
-        
-        // Efecto en cards al hacer clic
-        document.querySelectorAll('.card').forEach(card => {
-            card.addEventListener('click', (e) => {
-                const rect = card.getBoundingClientRect();
-                createColorExplosion(rect.left + rect.width/2, rect.top + rect.height/2);
-                intenseFlash();
-                card.style.animation = 'cardHoverGlitch 0.2s infinite';
-                setTimeout(() => {
-                    card.style.animation = '';
-                }, 300);
-            });
-        });
-        
-        // Cambio de colores de fondo aleatorio cada 2 segundos
-        setInterval(() => {
-            const randomHue = Math.random() * 360;
-            document.body.style.background = `radial-gradient(circle at center, hsl(${randomHue}, 100%, 5%), hsl(${randomHue + 40}, 100%, 10%))`;
-        }, 2000);
-        
-        // Animación de las tarjetas con cambio de color constante
-        setInterval(() => {
-            document.querySelectorAll('.card').forEach(card => {
-                const randomColor1 = `hsl(${Math.random() * 360}, 100%, 60%)`;
-                const randomColor2 = `hsl(${Math.random() * 360}, 100%, 60%)`;
-                card.style.borderImage = `linear-gradient(45deg, ${randomColor1}, ${randomColor2}) 1`;
-            });
-        }, 300);
-        
-        // Console.log psicodélico
-        console.log('%c⚡ KEOGLITCH ACTIVADO ⚡\n🌀 EXPERIENCIA PSICODÉLICA 🌀\n🎬 ESTILO COMUZA VIVO 🎬', 'color: magenta; font-size: 16px; font-weight: bold;');
-        
-        // Mensaje de bienvenida flotante
-        setTimeout(() => {
-            createFloatingText('🌀 BIENVENIDO AL CAOS 🌀', window.innerWidth/2, 100);
-            createFloatingText('⚡ HAZ CLIC EN TODO ⚡', window.innerWidth/2, 150);
-        }, 500);
-    </script>
+    }
+
+    function aplicarTemaGlobal() {
+        const temaCookie = getCookie('kecomu_tema');
+        if (temaCookie === 'claro') {
+            document.body.classList.add('modo-luz');
+        } else {
+            document.body.classList.remove('modo-luz');
+        }
+    }
+
+    function sincronizarEstilosCompletos() {
+        aplicarTemaGlobal();
+        aplicarAnimacionDesdeCookie();
+        aplicarModoAltaLegibilidad();
+    }
+
+    // ejecutar al inicio
+    sincronizarEstilosCompletos();
+
+    // opcional: si la página se carga con cambios desde configuraciones, escuchar storage (cross-tab)
+    window.addEventListener('storage', (e) => {
+        if (e.key && e.key.startsWith('kecomu_')) {
+            sincronizarEstilosCompletos();
+        }
+    });
+</script>
 </body>
-</html>
+    </html>
