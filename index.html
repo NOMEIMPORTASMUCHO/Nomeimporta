@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kecomu · Evolución</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -20,18 +21,21 @@
             min-height: 100vh;
         }
 
-        /* Animación mejorada - manteniendo tu esencia pero más fluida */
+        /* Animación que respeta tu efecto: texto invisible al inicio */
         @keyframes kecomuAparecer {
             0% {
                 opacity: 0;
                 transform: translateY(30px) scale(0.97);
-                filter: blur(6px);
+                filter: blur(8px);
                 border-color: rgba(255, 160, 180, 0.8);
+                color: transparent;
             }
             35% {
                 opacity: 0.7;
                 background: rgba(180, 80, 100, 0.2);
                 transform: translateY(-4px) scale(1.002);
+                filter: blur(4px);
+                color: transparent;
             }
             100% {
                 opacity: 0.94;
@@ -44,7 +48,6 @@
             }
         }
 
-        /* Versiones con micro-variaciones de color */
         .card {
             animation: kecomuAparecer 1.2s cubic-bezier(0.2, 0.85, 0.3, 1) forwards;
             border-radius: 20px;
@@ -97,12 +100,12 @@
             background: rgba(80, 35, 55, 0.5);
         }
 
-        /* delays escalonados pero más naturales */
+        /* delays escalonados */
         .d1 { animation-delay: 0s; }
         .d2 { animation-delay: 0.12s; }
         .d3 { animation-delay: 0.24s; }
-        .d4 { animation-delay: 0.4s; }
-        .d5 { animation-delay: 0.55s; }
+        .d4 { animation-delay: 0.36s; }
+        .d5 { animation-delay: 0.52s; }
 
         hr {
             border: none;
@@ -138,7 +141,7 @@
             margin-bottom: 24px;
         }
 
-        /* Colores distintivos por versión - tu sello */
+        /* Colores distintivos por versión */
         .nova-accent { color: #b87eff; }
         .kero-accent { color: #ff98c1; }
         .umwa-accent { color: #ff8a7a; }
@@ -156,33 +159,43 @@
             .bloque { min-height: auto; }
         }
 
-        /* Modo claro - más pulido pero manteniendo esencia */
-        body.claro {
+        /* Modo claro */
+        body.modo-claro {
             background: linear-gradient(135deg, #f5edff, #e8ddf8);
             color: #1e1528;
         }
 
-        body.claro .card,
-        body.claro .chip,
-        body.claro .bloque,
-        body.claro .btn-menu {
+        body.modo-claro .card,
+        body.modo-claro .chip,
+        body.modo-claro .bloque,
+        body.modo-claro .btn-menu {
             background: rgba(250, 245, 255, 0.75);
             backdrop-filter: blur(12px);
             border-color: rgba(120, 80, 150, 0.4);
             color: #1f172e;
         }
 
-        body.claro .chip:hover {
+        body.modo-claro .chip:hover {
             background: rgba(160, 120, 200, 0.25);
         }
 
-        body.claro hr {
+        body.modo-claro hr {
             background: linear-gradient(90deg, transparent, #b894da, transparent);
         }
 
-        body.claro .nova-accent { color: #8b5cf6; }
-        body.claro .kero-accent { color: #ec489a; }
-        body.claro .umwa-accent { color: #f97316; }
+        body.modo-claro .nova-accent { color: #8b5cf6; }
+        body.modo-claro .kero-accent { color: #ec489a; }
+        body.modo-claro .umwa-accent { color: #f97316; }
+
+        /* Animación para modo baja calidad */
+        @keyframes fadeSimple {
+            0% { opacity: 0; color: transparent; }
+            100% { opacity: 0.94; color: rgba(255, 240, 250, 0.85); background: rgba(30, 10, 18, 0.6); backdrop-filter: blur(12px); border: 1.5px solid rgba(255, 170, 190, 0.4); }
+        }
+
+        body.modo-claro @keyframes fadeSimple {
+            100% { background: rgba(250, 245, 255, 0.75); color: #1f172e; }
+        }
     </style>
 </head>
 <body>
@@ -215,7 +228,6 @@
 </div>
 
 <div class="grid-3">
-    <!-- Nova -->
     <div class="card bloque d5" onclick="location.href='Nova.html'">
         <h3><span style="opacity: 0.6;">Kecomu</span> <span class="nova-accent">✦ Nova</span></h3>
         <hr>
@@ -224,7 +236,6 @@
         <div class="badge">▸ Recomendado: Kero (diseño) · Umwarimu (aprendizaje)</div>
     </div>
 
-    <!-- Kero -->
     <div class="card bloque d5" onclick="location.href='Kero.html'">
         <h3><span style="opacity: 0.6;">Kecomu</span> <span class="kero-accent">✧ Kero</span></h3>
         <hr>
@@ -233,7 +244,6 @@
         <div class="badge">▸ Recomendado: Nova (estructura) · Umwarimu (guía)</div>
     </div>
 
-    <!-- Umwarimu -->
     <div class="card bloque d5" onclick="location.href='Umwarimu.html'">
         <h3><span style="opacity: 0.6;">Kecomu</span> <span class="umwa-accent">◌ Umwarimu</span></h3>
         <hr>
@@ -244,65 +254,88 @@
 </div>
 
 <script>
-    function getCookie(n) {
-        let match = document.cookie.match(new RegExp('(^| )' + n + '=([^;]+)'));
+    function getCookie(nombre) {
+        const match = document.cookie.match(new RegExp('(^| )' + nombre + '=([^;]+)'));
         return match ? match[2] : null;
     }
 
     function aplicarPreferencias() {
-        // tema claro/oscuro
-        if (getCookie('kecomu_tema') === 'claro') {
-            document.body.classList.add('claro');
+        // Tema claro/oscuro
+        const tema = getCookie('kecomu_tema');
+        if (tema === 'claro') {
+            document.body.classList.add('modo-claro');
+        } else {
+            document.body.classList.remove('modo-claro');
         }
         
-        // calidad de animación
-        const anim = getCookie('kecomu_animacion');
-        const styleId = 'style-anim-dinamica';
+        // Calidad de animación
+        const animacion = getCookie('kecomu_animacion');
+        const styleId = 'estilo-anim-dinamico';
         let oldStyle = document.getElementById(styleId);
         if (oldStyle) oldStyle.remove();
         
-        if (anim && anim !== 'alta') {
+        if (animacion === 'baja') {
             let nuevoStyle = document.createElement('style');
             nuevoStyle.id = styleId;
-            if (anim === 'baja') {
-                nuevoStyle.textContent = `
-                    .card, .btn-menu {
-                        animation: none !important;
-                        opacity: 0.94 !important;
-                        transform: none !important;
-                        filter: none !important;
-                    }
-                `;
-            } else if (anim === 'intermedia') {
-                nuevoStyle.textContent = `
-                    @keyframes kecomuSimple {
-                        0% { opacity: 0; transform: translateY(20px); }
-                        100% { opacity: 0.94; transform: translateY(0); }
-                    }
-                    .card, .btn-menu {
-                        animation: kecomuSimple 0.7s ease forwards !important;
-                        filter: none !important;
-                    }
-                `;
-            }
+            nuevoStyle.textContent = `
+                .card, .btn-menu {
+                    animation: fadeSimple 0.5s ease forwards !important;
+                    filter: none !important;
+                    transform: none !important;
+                }
+                .d1 { animation-delay: 0s !important; }
+                .d2 { animation-delay: 0.05s !important; }
+                .d3 { animation-delay: 0.1s !important; }
+                .d4 { animation-delay: 0.15s !important; }
+                .d5 { animation-delay: 0.2s !important; }
+            `;
+            document.head.appendChild(nuevoStyle);
+        } else if (animacion === 'intermedia') {
+            let nuevoStyle = document.createElement('style');
+            nuevoStyle.id = styleId;
+            nuevoStyle.textContent = `
+                @keyframes slideUpSimple {
+                    0% { opacity: 0; transform: translateY(20px); color: transparent; }
+                    100% { opacity: 0.94; transform: translateY(0); color: rgba(255, 240, 250, 0.85); background: rgba(30, 10, 18, 0.6); backdrop-filter: blur(12px); border: 1.5px solid rgba(255, 170, 190, 0.4); }
+                }
+                body.modo-claro @keyframes slideUpSimple {
+                    100% { background: rgba(250, 245, 255, 0.75); color: #1f172e; }
+                }
+                .card, .btn-menu {
+                    animation: slideUpSimple 0.9s ease forwards !important;
+                    filter: none !important;
+                }
+                .d1 { animation-delay: 0s !important; }
+                .d2 { animation-delay: 0.1s !important; }
+                .d3 { animation-delay: 0.2s !important; }
+                .d4 { animation-delay: 0.3s !important; }
+                .d5 { animation-delay: 0.4s !important; }
+            `;
             document.head.appendChild(nuevoStyle);
         }
         
-        // modo alta claridad
-        if (getCookie('kecomu_claridad') === 'true') {
-            let clarityStyle = document.getElementById('style-claridad');
-            if (clarityStyle) clarityStyle.remove();
-            clarityStyle = document.createElement('style');
-            clarityStyle.id = 'style-claridad';
+        // Modo alta claridad
+        const claridad = getCookie('kecomu_claridad');
+        const clarityId = 'estilo-claridad';
+        let oldClarity = document.getElementById(clarityId);
+        if (oldClarity) oldClarity.remove();
+        
+        if (claridad === 'true') {
+            let clarityStyle = document.createElement('style');
+            clarityStyle.id = clarityId;
+            const bgColor = document.body.classList.contains('modo-claro') ? '#ffffff' : '#0a0210';
+            const borderColor = document.body.classList.contains('modo-claro') ? '#7c5ea0' : '#ffb0c0';
             clarityStyle.textContent = `
                 .card, .chip, .bloque, .btn-menu {
                     backdrop-filter: none !important;
-                    background: ${document.body.classList.contains('claro') ? '#ffffff' : '#0a0210'} !important;
-                    border: 2px solid ${document.body.classList.contains('claro') ? '#7c5ea0' : '#ffb0c0'} !important;
+                    background: ${bgColor} !important;
+                    border: 2px solid ${borderColor} !important;
                     opacity: 1 !important;
+                    filter: none !important;
                 }
                 body { font-size: 18px !important; }
                 .chip strong, .bloque h3 { font-size: 1.2rem !important; }
+                .card { color: ${document.body.classList.contains('modo-claro') ? '#1a1a2e' : '#ffffff'} !important; }
             `;
             document.head.appendChild(clarityStyle);
         }
@@ -310,9 +343,8 @@
     
     aplicarPreferencias();
     
-    // escuchar cambios en otras pestañas
     window.addEventListener('storage', () => aplicarPreferencias());
 </script>
 
 </body>
-</html>
+    </html>
